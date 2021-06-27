@@ -47,6 +47,14 @@ type Config struct {
 	Tr                   lingo.Translations
 	Nvidia               bool
 	NvidiaRefresh        time.Duration
+	Key_ScaleGraphIn     string
+	Key_ScaleGraphOut    string
+	Key_Kill             string
+	Key_Up               string
+	Key_Down             string
+	Key_ScrollTop        string
+	Key_ScrollBottom     string
+	Key_ToggleBytes      string
 }
 
 func NewConfig() Config {
@@ -65,6 +73,14 @@ func NewConfig() Config {
 		MaxLogSize:           5000000,
 		Layout:               "default",
 		ExtensionVars:        make(map[string]string),
+		Key_ScaleGraphOut:     "l",
+		Key_ScaleGraphIn:      "h",
+		Key_Kill:              "d",
+		Key_Up:                "k",
+		Key_Down:              "j",
+		Key_ScrollTop:         "g",
+		Key_ScrollBottom:      "G",
+		Key_ToggleBytes:       "b",
 	}
 	conf.Colorscheme, _ = colorschemes.FromName(conf.ConfigDir, "default")
 	folder := conf.ConfigDir.QueryFolderContainsFile(CONFFILE)
@@ -187,6 +203,22 @@ func load(in io.Reader, conf *Config) error {
 				return fmt.Errorf(conf.Tr.Value("config.err.line", ln, err.Error()))
 			}
 			conf.Nvidia = nv
+		case key_scalegrapout:
+			conf.Key_ScaleGraphOut = kv[1]
+		case key_scalegrapin:
+			conf.Key_ScaleGraphIn = kv[1]
+		case key_kill:
+			conf.Key_Kill = kv[1]
+		case key_up:
+			conf.Key_Up = kv[1]
+		case key_down:
+			conf.Key_Down = kv[1]
+		case key_scrolltop:
+			conf.Key_ScrollTop = kv[1]
+		case key_scrollbottom:
+			conf.Key_ScrollBottom = kv[1]
+		case key_togglebytes:
+			conf.Key_ToggleBytes = kv[1]
 		}
 	}
 
@@ -283,4 +315,12 @@ const (
 	mbps                 = "mbps"
 	temperatures         = "temperatures"
 	nvidia               = "nvidia"
+	key_scalegrapout     = "key_scalegraphout"
+	key_scalegrapin      = "key_scalegraphin"
+	key_kill             = "key_kill"
+	key_up               = "key_up"
+	key_down             = "key_down"
+	key_scrolltop 	     = "key_scrolltop"
+	key_scrollbottom     = "key_scrollbottom"
+	key_togglebytes      = "key_togglebytes"
 )

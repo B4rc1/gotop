@@ -221,13 +221,13 @@ func eventLoop(c gotop.Config, grid *layout.MyGrid) {
 				switch e.ID {
 				case "?":
 					ui.Render(grid)
-				case "h":
+				case c.Key_ScaleGraphIn:
 					c.GraphHorizontalScale += graphHorizontalScaleDelta
 					for _, item := range grid.Lines {
 						item.Scale(c.GraphHorizontalScale)
 					}
 					ui.Render(grid)
-				case "l":
+				case c.Key_ScaleGraphOut:
 					if c.GraphHorizontalScale > graphHorizontalScaleDelta {
 						c.GraphHorizontalScale -= graphHorizontalScaleDelta
 						for _, item := range grid.Lines {
@@ -235,7 +235,7 @@ func eventLoop(c gotop.Config, grid *layout.MyGrid) {
 							ui.Render(item)
 						}
 					}
-				case "b":
+				case c.Key_ToggleBytes:
 					if grid.Net != nil {
 						grid.Net.Mbps = !grid.Net.Mbps
 					}
@@ -250,12 +250,12 @@ func eventLoop(c gotop.Config, grid *layout.MyGrid) {
 						grid.Proc.HandleClick(payload.X, payload.Y)
 						ui.Render(grid.Proc)
 					}
-				case "k", "<Up>", "<MouseWheelUp>":
+				case c.Key_Up, "<Up>", "<MouseWheelUp>":
 					if grid.Proc != nil {
 						grid.Proc.ScrollUp()
 						ui.Render(grid.Proc)
 					}
-				case "j", "<Down>", "<MouseWheelDown>":
+				case c.Key_Down, "<Down>", "<MouseWheelDown>":
 					if grid.Proc != nil {
 						grid.Proc.ScrollDown()
 						ui.Render(grid.Proc)
@@ -265,14 +265,14 @@ func eventLoop(c gotop.Config, grid *layout.MyGrid) {
 						grid.Proc.ScrollTop()
 						ui.Render(grid.Proc)
 					}
-				case "g":
+				case c.Key_ScrollTop:
 					if grid.Proc != nil {
-						if previousKey == "g" {
+						if previousKey == c.Key_ScrollTop{
 							grid.Proc.ScrollTop()
 							ui.Render(grid.Proc)
 						}
 					}
-				case "G", "<End>":
+				case c.Key_ScrollBottom, "<End>":
 					if grid.Proc != nil {
 						grid.Proc.ScrollBottom()
 						ui.Render(grid.Proc)
@@ -297,21 +297,21 @@ func eventLoop(c gotop.Config, grid *layout.MyGrid) {
 						grid.Proc.ScrollPageUp()
 						ui.Render(grid.Proc)
 					}
-				case "d":
+				case c.Key_Kill:
 					if grid.Proc != nil {
-						if previousKey == "d" {
+						if previousKey == c.Key_Kill {
 							grid.Proc.KillProc("SIGTERM")
 						}
 					}
 				case "3":
 					if grid.Proc != nil {
-						if previousKey == "d" {
+						if previousKey == c.Key_Kill {
 							grid.Proc.KillProc("SIGQUIT")
 						}
 					}
 				case "9":
 					if grid.Proc != nil {
-						if previousKey == "d" {
+						if previousKey == c.Key_Kill {
 							grid.Proc.KillProc("SIGKILL")
 						}
 					}
